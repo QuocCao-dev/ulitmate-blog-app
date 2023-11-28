@@ -101,10 +101,10 @@ export class UsersService {
     return posts;
   }
 
-  async followUser(followingUserId: string) {
+  async followUser(userId: string, followingUserId: string) {
     await this.prismaService.user.update({
       where: {
-        id: '1',
+        id: userId,
       },
       data: {
         followings: {
@@ -116,10 +116,10 @@ export class UsersService {
     });
   }
 
-  async unfollowUser(followingUserId: string) {
+  async unfollowUser(userId: string, followingUserId: string) {
     await this.prismaService.user.update({
       where: {
-        id: '1',
+        id: userId,
       },
       data: {
         followings: {
@@ -150,6 +150,25 @@ export class UsersService {
         },
       },
     });
+    return user;
+  }
+
+  async getMe(userId: string) {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        email: true,
+        username: true,
+      },
+    });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
     return user;
   }
 }

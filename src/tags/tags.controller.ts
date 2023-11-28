@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { TagsService } from './tags.service';
@@ -16,5 +16,11 @@ export class TagsController {
   @Get()
   findAll() {
     return this.tagsService.findAll();
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard)
+  remove(@Body() id: string) {
+    return this.tagsService.remove(id);
   }
 }

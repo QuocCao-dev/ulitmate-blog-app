@@ -38,4 +38,20 @@ export class TagsService {
 
     return tags;
   }
+
+  async remove(id: string) {
+    const tag = await this.prismaService.tag.findUnique({
+      where: { id },
+    });
+
+    if (!tag) {
+      throw new HttpException('Tag not found', HttpStatus.NOT_FOUND);
+    }
+
+    await this.prismaService.tag.delete({
+      where: { id },
+    });
+
+    return tag;
+  }
 }

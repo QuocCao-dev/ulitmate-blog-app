@@ -5,12 +5,15 @@ import {
   Get,
   Param,
   Post,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { ZodValidationPipe } from 'src/pipes/zod-validation.pipe';
 import { CreateUserDto, createUserSchema } from './dto/create-user.dto';
 import { LoginUserDto, loginUserSchema } from './dto/login-user.dto';
 import { UsersService } from './users.service';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -28,6 +31,12 @@ export class UsersController {
     return this.usersService.login(loginUserDto);
   }
 
+  @Get('me')
+  @UseGuards(AuthGuard)
+  getMe(@CurrentUser('id') userId: string) {
+    return this.usersService.getMe(userId);
+  }
+
   @Get(':username')
   getProfile(@Param('username') username: string) {
     return this.usersService.getProfile(username);
@@ -39,13 +48,21 @@ export class UsersController {
   }
 
   @Post('follow')
-  followUser(@Body('followingUserId') followingUserId: string) {
-    return this.usersService.followUser(followingUserId);
+  @UseGuards(AuthGuard)
+  followUser(
+    @Body('followingUserId') followingUserId: string,
+    @CurrentUser('id') userId: string,
+  ) {
+    return this.usersService.followUser(userId, followingUserId);
   }
 
   @Delete('follow')
-  unfollowUser(@Body('followingUserId') followingUserId: string) {
-    return this.usersService.unfollowUser(followingUserId);
+  @UseGuards(AuthGuard)
+  unfollowUser(
+    @Body('followingUserId') followingUserId: string,
+    @CurrentUser('id') userId: string,
+  ) {
+    return this.usersService.unfollowUser(userId, followingUserId);
   }
 
   @Get('followers')
