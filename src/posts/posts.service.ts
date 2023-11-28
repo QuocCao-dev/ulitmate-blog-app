@@ -58,7 +58,8 @@ export class PostsService {
         createdAt: true,
         author: {
           select: {
-            name: true,
+            id: true,
+            username: true,
             image: true,
           },
         },
