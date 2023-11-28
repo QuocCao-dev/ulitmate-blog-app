@@ -30,8 +30,8 @@ export class PostsController {
   }
 
   @Get()
-  findAll(@Query('cursor') cursor: string) {
-    return this.postsService.findAll(cursor);
+  findAll(@Query('cursor') cursor: string, @Query('tag') tag?: string) {
+    return this.postsService.findAll(cursor, tag);
   }
 
   @Get(':slug')

@@ -35,8 +35,11 @@ export class PostsService {
     });
   }
 
-  async findAll(cursor: string) {
+  async findAll(cursor: string, tag?: string) {
     const posts = await this.prismaService.post.findMany({
+      where: {
+        tags: tag ? { some: { id: tag } } : undefined,
+      },
       orderBy: {
         createdAt: 'desc',
       },
@@ -53,6 +56,13 @@ export class PostsService {
           },
         },
         bookmarks: true,
+        tags: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
       },
       take: LIMIT + 1,
       cursor: cursor ? { id: cursor } : undefined,
