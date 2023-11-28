@@ -112,6 +112,13 @@ export class PostsService {
             },
           },
         },
+        author: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+          },
+        },
       },
     });
 
