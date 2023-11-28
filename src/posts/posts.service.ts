@@ -10,7 +10,7 @@ export class PostsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(userId: string, createPostDto: CreatePostDto) {
-    const { title, description, text } = createPostDto;
+    const { title, description, text, tagIds } = createPostDto;
 
     const postExist = await this.prismaService.post.findUnique({
       where: { title },
@@ -30,6 +30,9 @@ export class PostsService {
           connect: {
             id: userId,
           },
+        },
+        tags: {
+          connect: tagIds?.map((id) => ({ id })) || [],
         },
       },
     });
