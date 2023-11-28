@@ -100,7 +100,7 @@ export class PostsService {
         html: true,
         slug: true,
         featuredImage: true,
-        authorId: true,
+
         likes: {
           select: {
             user: {
