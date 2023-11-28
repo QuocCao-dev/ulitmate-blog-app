@@ -46,7 +46,8 @@ export class CommentsService {
         text: true,
         user: {
           select: {
-            name: true,
+            id: true,
+            username: true,
             image: true,
           },
         },
