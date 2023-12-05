@@ -41,11 +41,13 @@ export class PostsService {
   async findAll(cursor: string, tagId?: string) {
     const posts = await this.prismaService.post.findMany({
       where: {
-        tags: {
-          some: {
-            id: tagId,
-          },
-        },
+        tags: tagId
+          ? {
+              some: {
+                id: tagId,
+              },
+            }
+          : undefined,
       },
       orderBy: {
         createdAt: 'desc',
