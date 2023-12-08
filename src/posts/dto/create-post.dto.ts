@@ -7,6 +7,7 @@ export const createPostSchema = z.object({
     .min(10, { message: 'Description must be at least 10 characters' }),
   text: z.string().optional(),
   tagIds: z.array(z.string()).optional(),
+  html: z.string().optional(),
 });
 
 export type CreatePostDto = z.infer<typeof createPostSchema>;

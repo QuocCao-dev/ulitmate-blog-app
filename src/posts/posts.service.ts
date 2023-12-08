@@ -10,7 +10,7 @@ export class PostsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(userId: string, createPostDto: CreatePostDto) {
-    const { title, description, text, tagIds } = createPostDto;
+    const { title, description, text, tagIds, html } = createPostDto;
 
     const postExist = await this.prismaService.post.findUnique({
       where: { title },
@@ -26,6 +26,7 @@ export class PostsService {
         description,
         text,
         slug: slugify(title, { lower: true }),
+        html,
         author: {
           connect: {
             id: userId,
