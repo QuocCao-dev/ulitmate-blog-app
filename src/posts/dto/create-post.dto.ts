@@ -5,7 +5,7 @@ export const createPostSchema = z.object({
   description: z
     .string({ required_error: 'Description is required' })
     .min(10, { message: 'Description must be at least 10 characters' }),
-  text: z.string({ required_error: 'Text is required' }),
+  text: z.string().optional(),
   tagIds: z.array(z.string()).optional(),
 });
 
