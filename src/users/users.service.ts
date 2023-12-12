@@ -143,7 +143,7 @@ export class UsersService {
             image: true,
             followedBy: {
               where: {
-                id: '1',
+                id,
               },
             },
           },
