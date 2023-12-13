@@ -165,11 +165,6 @@ export class UsersService {
             username: true,
             id: true,
             image: true,
-            followedBy: {
-              where: {
-                id,
-              },
-            },
           },
         },
       },

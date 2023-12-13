@@ -37,6 +37,11 @@ export class UsersController {
     return this.usersService.getMe(userId);
   }
 
+  @Get('followers')
+  getAllFollowers(@Body('id') id: string) {
+    return this.usersService.getAllFollowers(id);
+  }
+
   @Get(':username')
   @UseGuards(AuthGuard)
   getProfile(
@@ -67,10 +72,5 @@ export class UsersController {
     @CurrentUser('id') userId: string,
   ) {
     return this.usersService.unfollowUser(userId, followingUserId);
-  }
-
-  @Get('followers')
-  getAllFollowers(@Body('id') id: string) {
-    return this.usersService.getAllFollowers(id);
   }
 }
