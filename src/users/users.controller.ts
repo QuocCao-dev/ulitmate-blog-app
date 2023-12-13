@@ -38,8 +38,12 @@ export class UsersController {
   }
 
   @Get(':username')
-  getProfile(@Param('username') username: string) {
-    return this.usersService.getProfile(username);
+  @UseGuards(AuthGuard)
+  getProfile(
+    @Param('username') username: string,
+    @CurrentUser('id') userId: string,
+  ) {
+    return this.usersService.getProfile(username, userId);
   }
 
   @Get(':username/posts')

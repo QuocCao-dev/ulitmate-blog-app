@@ -66,7 +66,7 @@ export class UsersService {
     return user;
   }
 
-  async getProfile(username: string) {
+  async getProfile(username: string, userId: string) {
     const user = await this.prismaService.user.findUnique({
       where: { username },
       select: {
@@ -75,6 +75,13 @@ export class UsersService {
         image: true,
         email: true,
         username: true,
+        _count: {
+          select: {
+            posts: true,
+            followings: true,
+            followedBy: true,
+          },
+        },
       },
     });
 
@@ -82,7 +89,20 @@ export class UsersService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    return user;
+    const followedBy = await this.prismaService.user.findUnique({
+      where: {
+        username,
+      },
+      select: {
+        followedBy: {
+          where: {
+            id: userId,
+          },
+        },
+      },
+    });
+
+    return { user, isFollowing: !!followedBy?.followedBy?.length };
   }
 
   async getUserPosts(username: string) {
@@ -114,6 +134,8 @@ export class UsersService {
         },
       },
     });
+
+    return { success: true };
   }
 
   async unfollowUser(userId: string, followingUserId: string) {
@@ -129,6 +151,8 @@ export class UsersService {
         },
       },
     });
+
+    return { success: true };
   }
 
   async getAllFollowers(id: string) {
