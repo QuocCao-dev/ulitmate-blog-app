@@ -37,8 +37,8 @@ export class UsersController {
     return this.usersService.getMe(userId);
   }
 
-  @Get('followers')
-  getAllFollowers(@Body('id') id: string) {
+  @Get('followers/:id')
+  getAllFollowers(@Param('id') id: string) {
     return this.usersService.getAllFollowers(id);
   }
 
